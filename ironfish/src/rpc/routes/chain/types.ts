@@ -11,7 +11,7 @@ export type RpcSpend = {
   size: number
 }
 
-export const RpcSpendSchema: yup.ObjectSchema<RpcSpend> = yup
+export let RpcSpendSchema: yup.ObjectSchema<RpcSpend> = yup
   .object({
     nullifier: yup.string().defined(),
     commitment: yup.string().defined(),
@@ -28,7 +28,7 @@ export type RpcEncryptedNote = {
   commitment: string
 }
 
-export const RpcEncryptedNoteSchema: yup.ObjectSchema<RpcEncryptedNote> = yup
+export let RpcEncryptedNoteSchema: yup.ObjectSchema<RpcEncryptedNote> = yup
   .object({
     commitment: yup.string().defined(),
     hash: yup.string().defined(),
@@ -49,7 +49,7 @@ export type RpcBurn = {
   assetName: string
 }
 
-export const RpcBurnSchema: yup.ObjectSchema<RpcBurn> = yup
+export let RpcBurnSchema: yup.ObjectSchema<RpcBurn> = yup
   .object({
     id: yup.string().defined(),
     assetId: yup.string().defined(),
@@ -88,7 +88,7 @@ export type RpcMint = {
   owner: string
 }
 
-export const RpcMintSchema: yup.ObjectSchema<RpcMint> = yup
+export let RpcMintSchema: yup.ObjectSchema<RpcMint> = yup
   .object({
     assetId: yup.string().defined(),
     value: yup.string().defined(),
@@ -115,7 +115,7 @@ export type RpcTransaction = {
   serialized?: string
 }
 
-export const RpcTransactionSchema: yup.ObjectSchema<RpcTransaction> = yup
+export let RpcTransactionSchema: yup.ObjectSchema<RpcTransaction> = yup
   .object({
     hash: yup.string().defined(),
     size: yup.number().defined(),
@@ -149,7 +149,7 @@ export type RpcBlockHeader = {
   previous: string
 }
 
-export const RpcBlockHeaderSchema: yup.ObjectSchema<RpcBlockHeader> = yup
+export let RpcBlockHeaderSchema: yup.ObjectSchema<RpcBlockHeader> = yup
   .object({
     hash: yup.string().defined(),
     previous: yup.string().defined(),
@@ -172,7 +172,7 @@ export type RpcBlock = RpcBlockHeader & {
   transactions: RpcTransaction[]
 }
 
-export const RpcBlockSchema: yup.ObjectSchema<RpcBlock> = RpcBlockHeaderSchema.concat(
+export let RpcBlockSchema: yup.ObjectSchema<RpcBlock> = RpcBlockHeaderSchema.concat(
   yup
     .object({
       size: yup.number().defined(),
@@ -201,7 +201,7 @@ export type RpcAsset = {
   status: string
 }
 
-export const RpcAssetSchema: yup.ObjectSchema<RpcAsset> = yup
+export let RpcAssetSchema: yup.ObjectSchema<RpcAsset> = yup
   .object({
     id: yup.string().required(),
     metadata: yup.string().required(),
