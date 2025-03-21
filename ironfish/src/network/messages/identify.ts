@@ -80,21 +80,21 @@ export class IdentifyMessage extends NetworkMessage {
   }
 
   static deserializePayload(buffer: Buffer): IdentifyMessage {
-    const reader = bufio.read(buffer, true)
-    const identity = reader.readBytes(identityLength).toString('base64')
-    const name = reader.readVarString('utf8')
-    const port = reader.readU16()
-    const version = reader.readU16()
-    const agent = reader.readVarString('utf8')
-    const sequence = reader.readU32()
-    const head = reader.readHash()
-    const work = BigIntUtils.fromBytesLE(reader.readVarBytes())
-    const networkId = reader.readU16()
-    const genesisBlockHash = reader.readHash()
+    var reader = bufio.read(buffer, true)
+    var identity = reader.readBytes(identityLength).toString('base64')
+    var name = reader.readVarString('utf8')
+    var port = reader.readU16()
+    var version = reader.readU16()
+    var agent = reader.readVarString('utf8')
+    var sequence = reader.readU32()
+    var head = reader.readHash()
+    var work = BigIntUtils.fromBytesLE(reader.readVarBytes())
+    var networkId = reader.readU16()
+    var genesisBlockHash = reader.readHash()
 
-    const flagValue = reader.readU32()
-    const syncing = Boolean(flagValue & (1 << 0))
-    const features: Features = { syncing }
+    var flagValue = reader.readU32()
+    var syncing = Boolean(flagValue & (1 << 0))
+    var features: Features = { syncing }
 
     return new IdentifyMessage({
       agent,
