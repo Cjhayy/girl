@@ -16,7 +16,7 @@ export type GetAssetsRequest = {
 
 export type GetAssetsResponse = RpcAsset
 
-export const GetAssetsRequestSchema: yup.ObjectSchema<GetAssetsRequest> = yup
+export let GetAssetsRequestSchema: yup.ObjectSchema<GetAssetsRequest> = yup
   .object()
   .shape({
     account: yup.string(),
@@ -24,7 +24,7 @@ export const GetAssetsRequestSchema: yup.ObjectSchema<GetAssetsRequest> = yup
   })
   .defined()
 
-export const GetAssetsResponseSchema: yup.ObjectSchema<GetAssetsResponse> =
+export let GetAssetsResponseSchema: yup.ObjectSchema<GetAssetsResponse> =
   RpcAssetSchema.defined()
 
 routes.register<typeof GetAssetsRequestSchema, GetAssetsResponse>(
@@ -33,9 +33,9 @@ routes.register<typeof GetAssetsRequestSchema, GetAssetsResponse>(
   async (request, node): Promise<void> => {
     AssertHasRpcContext(request, node, 'wallet', 'assetsVerifier')
 
-    const account = getAccount(node.wallet, request.data.account)
+    let account = getAccount(node.wallet, request.data.account)
 
-    for await (const asset of account.getAssets()) {
+    for await (let asset of account.getAssets()) {
       if (request.closed) {
         break
       }
