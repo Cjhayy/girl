@@ -4,4 +4,4 @@
 
 import { multisig } from '@ironfish/rust-nodejs'
 
-export const Multisig = multisig
+export let Multisig = multisig
