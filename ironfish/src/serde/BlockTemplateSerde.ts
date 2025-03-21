@@ -29,7 +29,7 @@ export type SerializedBlockTemplate = {
 
 export class RawBlockTemplateSerde {
   static serialize(block: RawBlock, previousBlock: RawBlock): SerializedBlockTemplate {
-    const header = {
+    let header = {
       sequence: block.header.sequence,
       previousBlockHash: block.header.previousBlockHash.toString('hex'),
       noteCommitment: block.header.noteCommitment.toString('hex'),
@@ -39,14 +39,14 @@ export class RawBlockTemplateSerde {
       timestamp: block.header.timestamp.getTime(),
       graffiti: block.header.graffiti.toString('hex'),
     }
-    const previousBlockInfo = {
+    let previousBlockInfo = {
       target: BigIntUtils.writeBigU256BE(previousBlock.header.target.asBigInt()).toString(
         'hex',
       ),
       timestamp: previousBlock.header.timestamp.getTime(),
     }
 
-    const transactions = block.transactions.map((t) => t.serialize().toString('hex'))
+    let transactions = block.transactions.map((t) => t.serialize().toString('hex'))
     return {
       header,
       transactions,
@@ -55,7 +55,7 @@ export class RawBlockTemplateSerde {
   }
 
   static deserialize(blockTemplate: SerializedBlockTemplate): RawBlock {
-    const noteHasher = new NoteEncryptedHashSerde()
+    let noteHasher = new NoteEncryptedHashSerde()
 
     return {
       header: {
@@ -85,7 +85,7 @@ export class BlockTemplateSerde {
   }
 
   static deserialize(blockTemplate: SerializedBlockTemplate, chain: Blockchain): Block {
-    const rawBlock = RawBlockTemplateSerde.deserialize(blockTemplate)
+    let rawBlock = RawBlockTemplateSerde.deserialize(blockTemplate)
 
     return chain.newBlockFromRaw(rawBlock)
   }
