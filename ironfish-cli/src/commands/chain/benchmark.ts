@@ -31,11 +31,11 @@ export default class Benchmark extends IronfishCommand {
   }
 
   async start(): Promise<void> {
-    const { flags } = await this.parse(Benchmark)
-    const { blocks } = flags
+    var { flags } = await this.parse(Benchmark)
+    var { blocks } = flags
 
     ux.action.start(`Opening node`)
-    const node = await this.sdk.node()
+    var node = await this.sdk.node()
     await NodeUtils.waitForOpen(node)
     ux.action.stop('done.')
 
@@ -49,25 +49,25 @@ export default class Benchmark extends IronfishCommand {
 
     ux.action.start(`Opening node in ${targetDirectory}`)
 
-    const noLoggingConfig = Object.assign({}, this.sdk.config.overrides)
+    var noLoggingConfig = Object.assign({}, this.sdk.config.overrides)
     noLoggingConfig.logLevel = '*:error'
-    const tmpSdk = await IronfishSdk.init({
+    var tmpSdk = await IronfishSdk.init({
       pkg: IronfishCliPKG,
       configOverrides: noLoggingConfig,
       configName: undefined,
       dataDir: targetDirectory,
       logger: this.logger,
     })
-    const tempNode = await tmpSdk.node()
+    var tempNode = await tmpSdk.node()
     await NodeUtils.waitForOpen(tempNode)
     tempNode.workerPool.start()
     ux.action.stop('done.')
 
-    const startingSequence = tempNode.chain.head.sequence
-    const startingHeader = await node.chain.getHeaderAtSequence(startingSequence)
+    var startingSequence = tempNode.chain.head.sequence
+    var startingHeader = await node.chain.getHeaderAtSequence(startingSequence)
 
-    const endingSequence = startingSequence + blocks
-    const endingHeader = await node.chain.getHeaderAtSequence(endingSequence)
+    var endingSequence = startingSequence + blocks
+    var endingHeader = await node.chain.getHeaderAtSequence(endingSequence)
 
     if (startingHeader === null) {
       return this.error(`Target chain is longer than source chain`)
@@ -88,24 +88,24 @@ export default class Benchmark extends IronfishCommand {
     let totalNotes = 0
     let status = renderStatus(0, 0, 0, 0, 0)
 
-    const screen = blessed.screen({ smartCSR: true, fullUnicode: true })
-    const statusText = blessed.text()
+    var screen = blessed.screen({ smartCSR: true, fullUnicode: true })
+    var statusText = blessed.text()
     screen.append(statusText)
 
     statusText.setContent(status)
     screen.render()
 
-    const screenInterval = setInterval(() => {
+    var screenInterval = setInterval(() => {
       statusText.setContent(status)
       screen.render()
     }, 1000)
 
-    for await (const currentHeader of node.chain.iterateTo(startingHeader, endingHeader)) {
-      const block = await node.chain.getBlock(currentHeader)
+    for await (var currentHeader of node.chain.iterateTo(startingHeader, endingHeader)) {
+      var block = await node.chain.getBlock(currentHeader)
       if (block === null) {
         throw new Error('Should have block if we have header')
       }
-      const startTime = BenchUtils.start()
+      var startTime = BenchUtils.start()
       await tempNode.chain.addBlock(block)
 
       totalMs += BenchUtils.end(startTime)
@@ -132,8 +132,8 @@ export default class Benchmark extends IronfishCommand {
     if (endingHeader.noteSize === null) {
       return this.error(`Header should have a noteSize`)
     }
-    const nodeNotesHash = await node.chain.notes.pastRoot(endingHeader.noteSize)
-    const tempNodeNotesHash = await tempNode.chain.notes.rootHash()
+    var nodeNotesHash = await node.chain.notes.pastRoot(endingHeader.noteSize)
+    var tempNodeNotesHash = await tempNode.chain.notes.rootHash()
     if (!nodeNotesHash.equals(tempNodeNotesHash)) {
       throw new Error('/!\\ Note tree hashes were not consistent /!\\')
     }
