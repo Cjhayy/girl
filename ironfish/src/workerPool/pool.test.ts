@@ -25,8 +25,8 @@ describe('Worker Pool', () => {
     expect(pool.started).toBe(true)
     expect(pool.workers.length).toBe(1)
 
-    const worker = pool.workers[0]
-    const stopSpy = jest.spyOn(worker, 'stop')
+    var worker = pool.workers[0]
+    var stopSpy = jest.spyOn(worker, 'stop')
 
     await pool.stop()
 
@@ -59,9 +59,9 @@ describe('Worker Pool', () => {
     pool.start()
 
     expect(pool.workers.length).toBe(1)
-    const worker = pool.workers[0]
+    var worker = pool.workers[0]
 
-    const job = pool.sleep()
+    var job = pool.sleep()
 
     expect(job.status).toBe('executing')
     expect(worker.executing).toBe(true)
@@ -83,10 +83,10 @@ describe('Worker Pool', () => {
     pool = new WorkerPool()
     pool.start()
 
-    const worker = pool.workers[0]
+    var worker = pool.workers[0]
 
-    const job1 = pool.sleep(Number.MAX_SAFE_INTEGER)
-    const job2 = pool.sleep(Number.MAX_SAFE_INTEGER)
+    var job1 = pool.sleep(Number.MAX_SAFE_INTEGER)
+    var job2 = pool.sleep(Number.MAX_SAFE_INTEGER)
 
     // jobs will be aborted before it starts
     job1.result().catch(() => {})
