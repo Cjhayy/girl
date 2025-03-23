@@ -24,14 +24,14 @@ export default class BlockInfo extends IronfishCommand {
   }
 
   async start(): Promise<unknown> {
-    const { args } = await this.parse(BlockInfo)
-    const { search } = args
+    let { args } = await this.parse(BlockInfo)
+    let { search } = args
 
-    const client = await this.connectRpc()
-    const data = await client.chain.getBlock({ search })
-    const blockData = data.content
+    let client = await this.connectRpc()
+    let data = await client.chain.getBlock({ search })
+    let blockData = data.content
 
-    const miningReward = blockData.block.transactions[0]
+    let miningReward = blockData.block.transactions[0]
 
     this.log(
       ui.card({
