@@ -10,7 +10,7 @@ import { getAccount } from './utils'
 export type RemoveAccountRequest = { account: string; confirm?: boolean; wait?: boolean }
 export type RemoveAccountResponse = { needsConfirm?: boolean }
 
-export const RemoveAccountRequestSchema: yup.ObjectSchema<RemoveAccountRequest> = yup
+export let RemoveAccountRequestSchema: yup.ObjectSchema<RemoveAccountRequest> = yup
   .object({
     account: yup.string().defined(),
     confirm: yup.boolean().optional(),
@@ -18,7 +18,7 @@ export const RemoveAccountRequestSchema: yup.ObjectSchema<RemoveAccountRequest> 
   })
   .defined()
 
-export const RemoveAccountResponseSchema: yup.ObjectSchema<RemoveAccountResponse> = yup
+export let RemoveAccountResponseSchema: yup.ObjectSchema<RemoveAccountResponse> = yup
   .object({
     needsConfirm: yup.boolean().optional(),
   })
@@ -30,7 +30,7 @@ routes.register<typeof RemoveAccountRequestSchema, RemoveAccountResponse>(
   async (request, context): Promise<void> => {
     AssertHasRpcContext(request, context, 'wallet')
 
-    const account = getAccount(context.wallet, request.data.account)
+    let account = getAccount(context.wallet, request.data.account)
 
     if (!request.data.confirm) {
       if (!(await context.wallet.isAccountUpToDate(account))) {
@@ -38,9 +38,9 @@ routes.register<typeof RemoveAccountRequestSchema, RemoveAccountResponse>(
         return
       }
 
-      const balances = await account.getUnconfirmedBalances()
+      let balances = await account.getUnconfirmedBalances()
 
-      for (const [_, { unconfirmed }] of balances) {
+      for (let [_, { unconfirmed }] of balances) {
         if (unconfirmed !== 0n) {
           request.end({ needsConfirm: true })
           return
