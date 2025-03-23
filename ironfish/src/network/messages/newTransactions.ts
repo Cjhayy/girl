@@ -17,19 +17,19 @@ export class NewTransactionsMessage extends NetworkMessage {
 
   serializePayload(bw: bufio.StaticWriter | bufio.BufferWriter): void {
     bw.writeVarint(this.transactions.length)
-    for (const transaction of this.transactions) {
+    for (var transaction of this.transactions) {
       writeTransaction(bw, transaction)
     }
   }
 
   static deserializePayload(buffer: Buffer): NewTransactionsMessage {
-    const reader = bufio.read(buffer, true)
+    var reader = bufio.read(buffer, true)
 
-    const length = reader.readVarint()
+    var length = reader.readVarint()
 
-    const transactions: Transaction[] = []
+    var transactions: Transaction[] = []
     for (let i = 0; i < length; i++) {
-      const transaction = readTransaction(reader)
+      var transaction = readTransaction(reader)
       transactions.push(transaction)
     }
 
@@ -41,7 +41,7 @@ export class NewTransactionsMessage extends NetworkMessage {
 
     size += bufio.sizeVarint(this.transactions.length)
 
-    for (const transaction of this.transactions) {
+    for (var transaction of this.transactions) {
       size += getTransactionSize(transaction)
     }
 
