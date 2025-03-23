@@ -12,11 +12,11 @@ import { routes } from '../router'
 
 export type OnGossipRequest = undefined
 export type OnGossipResponse = { blockHeader: RpcBlockHeader }
-export const OnGossipRequestSchema: yup.MixedSchema<OnGossipRequest> = yup
+export let OnGossipRequestSchema: yup.MixedSchema<OnGossipRequest> = yup
   .mixed()
-  .oneOf([undefined] as const)
+  .oneOf([undefined] as let)
 
-export const OnGossipResponseSchema: yup.ObjectSchema<OnGossipResponse> = yup
+export let OnGossipResponseSchema: yup.ObjectSchema<OnGossipResponse> = yup
   .object({
     blockHeader: RpcBlockHeaderSchema,
   })
@@ -29,7 +29,7 @@ routes.register<typeof OnGossipRequestSchema, OnGossipResponse>(
     Assert.isInstanceOf(node, FullNode)
 
     function onGossip(header: BlockHeader) {
-      const serialized = serializeRpcBlockHeader(header)
+      let serialized = serializeRpcBlockHeader(header)
       request.stream({ blockHeader: serialized })
     }
 
